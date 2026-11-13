@@ -1,0 +1,45 @@
+# Configuración del agente de indicadores del Banco Central de Chile.
+# No pongas contraseñas ni claves aquí: esas van en .env (ver .env.example).
+
+fuente:
+  url: "https://si3.bcentral.cl/indicadoressiete/secure/indicadoresdiarios.aspx"
+  timeout_segundos: 20
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) TaskBancoCentral-UDD/1.0"
+
+# Rangos de sanidad. Si un valor cae fuera de este rango, se considera inválido
+# y NO se guarda ni se reporta como dato (ver scripts/bcentral.py: validar()).
+rangos_validos:
+  dolar_observado:
+    min: 500
+    max: 2000
+    unidad: "CLP por USD"
+  uf:
+    min: 30000
+    max: 50000
+    unidad: "CLP"
+  cobre:
+    min: 1
+    max: 10
+    unidad: "USD por libra"
+
+excel:
+  ruta: "data/indicadores_banco_central.xlsx"
+  hoja: "Indicadores"
+
+correo:
+  destinatario: "c.becar@udd.cl"
+  destinatarios_permitidos:
+    - "c.becar@udd.cl"
+  asunto_normal: "Indicadores Banco Central {fecha}"
+  asunto_alerta: "[ALERTA] Falló la obtención de indicadores del Banco Central"
+  remitente_nombre: "Agente Banco Central (UDD)"
+
+smtp:
+  servidor: "smtp.gmail.com"
+  puerto: 587
+
+automatizacion:
+  frecuencia: "semanal"
+  dia: "lunes"
+  hora: "21:00"
+  zona_horaria: "America/Santiago"
